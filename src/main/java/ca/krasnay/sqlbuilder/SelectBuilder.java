@@ -245,12 +245,17 @@ public class SelectBuilder extends AbstractSqlBuilder implements Cloneable, Seri
      *            If true, specifies the direction "asc", otherwise, specifies
      *            the direction "desc".
      */
-    public SelectBuilder orderBy(String name, boolean ascending) {
+    public SelectBuilder orderBy(String name, boolean ascending, String argument) {
         if (ascending) {
-            orderBys.add(name + " asc");
+            orderBys.add(name + " asc " + argument);
         } else {
-            orderBys.add(name + " desc");
+            orderBys.add(name + " desc " + argument);
         }
+        return this;
+    }
+
+    public SelectBuilder orderBy(String name, boolean ascending) {
+        orderBy(name, ascending, "");
         return this;
     }
 
@@ -288,7 +293,7 @@ public class SelectBuilder extends AbstractSqlBuilder implements Cloneable, Seri
         if(limit > 0)
             sql.append(" limit " + limit);
         if(offset > 0)
-            sql.append(", " + offset);
+            sql.append(" offset " + offset);
 
         return sql.toString();
     }
